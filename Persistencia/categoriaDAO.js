@@ -57,11 +57,20 @@ export default class CategoriaDAO{
         }
     }
 
-    async consultar(){
-
+    async consultar(termo){
+        let sql = "";
+        let parametros = [];
+        if(isNaN(parseInt(termo))){
+            sql = "SELECT * FROM categoria WHERE cat_descricao LIKE ? ORDER BY cat_descricao";
+            parametros.push("%"+termo+"%");
+        }
+        else{
+            sql = "SELECT * FROM categoria WHERE cat_codigo = ? ORDER BY cat_descricao";
+            parametros.push(termo);
+        }
         const conexao = await conectar();
-        const sql = "SELECT * FROM categoria ORDER BY cat_descricao";
-        const [registros, campos] = await conexao.query(sql);
+        
+        const [registros, campos] = await conexao.query(sql, parametros);
         let listaCategoria=[];
         for (const registro of registros){
             const categoria = new Categoria(registro['cat_codigo'],
