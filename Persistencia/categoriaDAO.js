@@ -40,8 +40,8 @@ export default class CategoriaDAO{
     async editar(categoria){
         if (categoria instanceof Categoria){
             const conexao = await conectar();
-            const sql = "UPDATE categoria SET cat_descricao = ?";
-            const parametros = [categoria.descricao];
+            const sql = "UPDATE categoria SET cat_descricao = ? WHERE cat_codigo = ?";
+            const parametros = [categoria.descricao,categoria.codigo];
             await conexao.execute(sql,parametros);
             await conexao.release();
         }
@@ -71,6 +71,7 @@ export default class CategoriaDAO{
         const conexao = await conectar();
         
         const [registros, campos] = await conexao.query(sql, parametros);
+        await conexao.release();
         let listaCategoria=[];
         for (const registro of registros){
             const categoria = new Categoria(registro['cat_codigo'],
