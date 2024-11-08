@@ -29,7 +29,7 @@ export default class CategoriaDAO{
     async gravar(categoria){
         if (categoria instanceof Categoria){
             const conexao = await conectar();
-            const sql = "INSERT INTO categoria(cat_descricao) VALUES ?";
+            const sql = "INSERT INTO categoria(cat_descricao) VALUES (?)";
             const parametros = [categoria.descricao];
             const resultado = await conexao.execute(sql,parametros);
             categoria.codigo = resultado[0].insertId;
