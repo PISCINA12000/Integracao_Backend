@@ -25,7 +25,7 @@ export default class ProdutoDAO {
                 CONSTRAINT pk_produto 
                     PRIMARY KEY(prod_codigo),
                 CONSTRAINT fk_categoria 
-                    FOREIGN KEY(fk_codigo_cat) REFERENCES categoria(cad_codigo)
+                    FOREIGN KEY(fk_codigo_cat) REFERENCES categoria(cat_codigo)
             );
         `;
             await conexao.execute(sql);
@@ -97,7 +97,7 @@ export default class ProdutoDAO {
         const [linhas, campos] = await conexao.execute(sql, parametros);
         let listaProdutos = [];
         for (const linha of linhas) {
-            const categoria = new Categoria(linha['cat_codigo'],linha['descricao']);
+            const categoria = new Categoria(linha['cat_codigo'],linha['cat_descricao']);
             const produto = new Produto(
                 linha['prod_codigo'],
                 linha['prod_descricao'],
